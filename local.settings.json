@@ -3,6 +3,10 @@
   "Values": {
     "AzureWebJobsStorage": "",
     "FUNCTIONS_WORKER_RUNTIME": "python",
-    "AzureWebJobsFeatureFlags": "EnableWorkerIndexing"
+    "AzureWebJobsFeatureFlags": "EnableWorkerIndexing",
+    "SHELFCAT_GATE_API_KEY": "",
+    "SHELFCAT_AUDIT_SIGNING_KEY": "",
+    "SHELFCAT_LEDGER_PATH": "",
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": ""
   }
 }

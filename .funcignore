@@ -2,4 +2,7 @@
 .vscode
 local.settings.json
 test
-.venv
+.venvtests/
+requirements-dev.txt
+Dockerfile
+.dockerignore
