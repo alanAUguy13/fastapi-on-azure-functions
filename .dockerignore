@@ -1,0 +1,11 @@
+.git
+.github
+.venv
+.vscode
+.devcontainer
+__pycache__
+*.pyc
+tests
+infra
+local.settings.json
+readme_diagram.png

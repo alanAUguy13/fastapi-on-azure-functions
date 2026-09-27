@@ -13,6 +13,38 @@ description: This is a sample Azure Function app created with the FastAPI framew
 ---
 <!-- YAML front-matter schema: https://review.learn.microsoft.com/en-us/help/contribute/samples/process/onboarding?branch=main#supported-metadata-fields-for-readmemd -->
 
+# ShelfCat Truth API on Azure Functions
+
+This fork hosts the **ShelfCat Truth API**, the cloud write boundary for ShelfCat's immutable audit trail:
+
+> AI proposes. CBN transports. GPU enriches. Rust enforces. Only the gate writes truth.
+
+| Endpoint | Purpose |
+|---|---|
+| `POST /v1/truth/events` | Append a Rust Gate decision. Requires the `X-ShelfCat-Gate-Key` header. Returns 403 unless `source="rust_gate"` and `validated=true` |
+| `GET /v1/truth/events?limit=N` | Most recent ledger records |
+| `GET /v1/truth/verify` | Recomputes the SHA-256 chain and Ed25519 signatures |
+| `GET /health` | Liveness |
+
+The ledger format is byte-compatible with ShelfCat's Rust `crates/audit-chain`. Both are pinned to
+a shared hash test vector.
+
+**Settings** (use Key Vault references in Azure):
+
+| Setting | Meaning |
+|---|---|
+| `SHELFCAT_GATE_API_KEY` | Required for writes. If unset, writes return 503 |
+| `SHELFCAT_AUDIT_SIGNING_KEY` | Hex Ed25519 seed. When set, every record is signed |
+| `SHELFCAT_LEDGER_PATH` | Ledger file. Defaults to `/tmp/shelfcat/truth-ledger.jsonl`, which is **ephemeral**. Mount durable, immutable (WORM) storage in production |
+| `APPLICATIONINSIGHTS_CONNECTION_STRING` | Turns on OpenTelemetry export (traces, the `shelfcat.truth.decisions` and `shelfcat.ledger.verifications` metrics, and logs) to Azure Monitor |
+
+```bash
+pip install -r requirements-dev.txt && python -m pytest
+docker build -t shelfcat-truth-api .
+```
+
+---
+
 # Using FastAPI Framework with Azure Functions
 
 Azure Functions supports WSGI and ASGI-compatible frameworks with HTTP-triggered Python functions. This can be helpful if you are familiar with a particular framework, or if you have existing code you would like to reuse to create the Function app. The following is an example of creating an Azure Function app using FastAPI.
